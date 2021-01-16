@@ -1,12 +1,13 @@
 import React from "react";
 import "./main.scss";
-import {Field, Formik} from "formik";
+import {ErrorMessage, Field, FieldArray, Form, Formik} from "formik";
 import * as Yup from "yup"
-import classNames from "classnames";
 import StatePicker from "./components/StatePicker";
 import DogBreedPicker from "./components/DogBreedPicker";
+import FormInput from "./components/FormInput";
 
 function App() {
+	const petObject = {name: "", breed: ""}
 	return (
 		<Formik
 			initialValues={{
@@ -19,7 +20,8 @@ function App() {
 				state: "",
 				zip: "",
 				startDate: "",
-				dogBreed: ""
+				dogBreed: "",
+				pets: [petObject]
 			}}
 			validationSchema={Yup.object({
 				firstName: Yup.string()
@@ -32,67 +34,45 @@ function App() {
 				city: Yup.string().required("required"),
 				state: Yup.string().required("required"),
 				zip: Yup.string().matches(/\d{5}/, "invalid zip code").required("required"),
-				dogBreed: Yup.string().required("required")
+				pets: Yup.array()
+					.of(Yup.object().shape({
+						name: Yup.string().required("required"),
+						breed: Yup.string().required("required")
+					}))
 			})}
 			onSubmit={values => console.log(values)}>
-			{formik => <form onSubmit={formik.handleSubmit} noValidate={true}>
-				<div className="mb-3">
-					<label htmlFor="firstName" className="form-label">First Name</label>
-					<input id="firstName"
-					       {...formik.getFieldProps("firstName")}
-					       className={classNames("form-control form-control-lg", {"is-invalid": formik.errors.firstName && formik.touched.firstName})}/>
-					<div className="invalid-feedback">{formik.errors.firstName}</div>
-				</div>
-				<div className="mb-3">
-					<label htmlFor="lastName" className="form-label">Last Name</label>
-					<input id="lastName"
-					       {...formik.getFieldProps("lastName")}
-					       className={classNames("form-control form-control-lg", {"is-invalid": formik.errors.lastName && formik.touched.lastName})}/>
-					<div className="invalid-feedback">{formik.errors.lastName}</div>
-				</div>
-				<div className="mb-3">
-					<label htmlFor="email" className="form-label">Email</label>
-					<input id="email"
-					       type="email"
-					       {...formik.getFieldProps("email")}
-					       className={classNames("form-control form-control-lg", {"is-invalid": formik.errors.email && formik.touched.email})}/>
-					<div className="invalid-feedback">{formik.errors.email}</div>
-				</div>
-				<div className="mb-3">
-					<label htmlFor="phone" className="form-label">Phone</label>
-					<input id="phone"
-					       type="tel"
-					       {...formik.getFieldProps("phone")}
-					       className={classNames("form-control form-control-lg", {"is-invalid": formik.errors.phone && formik.touched.phone})}/>
-					<div className="invalid-feedback">{formik.errors.phone}</div>
-				</div>
-				<div className="mb-3">
-					<label htmlFor="address" className="form-label">Address</label>
-					<input id="address"
-					       {...formik.getFieldProps("address")}
-					       className={classNames("form-control form-control-lg", {"is-invalid": formik.errors.address && formik.touched.address})}/>
-					<div className="invalid-feedback">{formik.errors.address}</div>
-				</div>
-				<div className="mb-3">
-					<label htmlFor="city" className="form-label">City</label>
-					<input id="city"
-					       {...formik.getFieldProps("city")}
-					       className={classNames("form-control form-control-lg", {"is-invalid": formik.errors.city && formik.touched.city})}/>
-					<div className="invalid-feedback">{formik.errors.city}</div>
-				</div>
+			{({values}) => <Form noValidate={true}>
+				<FieldArray name="pets">
+					{({insert, remove, push}) =>
+						<>
+							{
+								values.pets.length > 0 && values.pets.map((pet, i) =>
+									<React.Fragment key={`pet-${i}`}>
+										<Field name={`pets.${i}.name`}
+										       label="Name"
+										       component={FormInput}/>
+										<Field name={`pets.${i}.breed`}
+										       label="Breed"
+										       component={DogBreedPicker}/>
+									</React.Fragment>)
+							}
+						</>
+					}
+				</FieldArray>
+				<Field name="firstName" label="First Name" component={FormInput}/>
+				<Field name="lastName" label="Last Name" component={FormInput}/>
+				<Field name="email" label="Email" type="email" component={FormInput}/>
+				<Field name="phone" label="Phone" type="tel" component={FormInput}/>
+				<Field name="address" label="Address" component={FormInput}/>
+				<Field name="city" label="City" component={FormInput}/>
 				<div className="row">
-					<StatePicker formik={formik}/>
-					<div className="mb-3 col">
-						<label htmlFor="zip" className="form-label">Zip</label>
-						<input id="zip"
-						       {...formik.getFieldProps("zip")}
-						       className={classNames("form-control form-control-lg", {"is-invalid": formik.errors.zip && formik.touched.zip})}/>
-						<div className="invalid-feedback">{formik.errors.zip}</div>
-					</div>
+					<Field component={StatePicker}/>
+					<Field name="zip" label="Zip" component={FormInput}/>
 				</div>
-				<Field component={DogBreedPicker}/>
+
 				<button className="btn btn-lg btn-outline-primary" type="submit">Submit</button>
-			</form>}
+				<button className="btn btn-lg btn-outline-primary" type="reset">Clear</button>
+			</Form>}
 		</Formik>
 	)
 }

@@ -13,7 +13,7 @@ const stateAbbreviations: string[] = [
 
 const stateSelectOptions = stateAbbreviations.map(e => <option key={uuidv4()}>{e}</option>);
 
-const StatePicker = ({formik}: FormikValues) =>
+const StatePicker: React.FC<FormikValues> = ({form: formik}) =>
 		<div className="mb-3 col">
 			<label className="form-label" htmlFor="state">State</label>
 			<select id="state"
