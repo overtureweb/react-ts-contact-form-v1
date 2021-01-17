@@ -1,13 +1,15 @@
 import React from "react";
 import "./main.scss";
-import {ErrorMessage, Field, FieldArray, Form, Formik} from "formik";
+import {Field, FieldArray, Form, Formik} from "formik";
 import * as Yup from "yup"
 import StatePicker from "./components/StatePicker";
 import DogBreedPicker from "./components/DogBreedPicker";
 import FormInput from "./components/FormInput";
+import FormSelect from "./components/FormSelect";
+import {getMonthsForDropDown, getYearsForDropDown} from "./utilities/DateUtilities";
 
 function App() {
-	const petObject = {name: "", breed: ""}
+	const petObject = {name: "", breed: "", dobMonth: "", dobYear: "", gender: "", weight: "", microchipped: ""};
 	return (
 		<Formik
 			initialValues={{
@@ -20,7 +22,6 @@ function App() {
 				state: "",
 				zip: "",
 				startDate: "",
-				dogBreed: "",
 				pets: [petObject]
 			}}
 			validationSchema={Yup.object({
@@ -46,16 +47,40 @@ function App() {
 					{({insert, remove, push}) =>
 						<>
 							{
-								values.pets.length > 0 && values.pets.map((pet, i) =>
-									<React.Fragment key={`pet-${i}`}>
+								values.pets.length > 0 && values.pets.map((pet, i, arr) =>
+									<div className="mb-3" key={`pet-${i}`}>
 										<Field name={`pets.${i}.name`}
 										       label="Name"
 										       component={FormInput}/>
 										<Field name={`pets.${i}.breed`}
 										       label="Breed"
 										       component={DogBreedPicker}/>
-									</React.Fragment>)
+										<Field name={`pets.${i}.gender`}
+										       label="Gender"
+										       component={FormSelect}
+										       selectMenuValues={["female/spayed", "male/neutered", "female", "male"]}
+										/>
+										<div className="row">
+											<Field component={FormSelect}
+											       name={`pets.${i}.dobMonth`}
+											       label="Month"
+											       selectMenuValues={getMonthsForDropDown}/>
+											<Field component={FormSelect}
+											       name={`pets.${i}.dobYear`}
+											       label="Year"
+											       selectMenuValues={getYearsForDropDown(new Date().getFullYear())}
+											/>
+										</div>
+										{i > 0 && <button className="btn btn-danger"
+										                  type="button"
+										                  onClick={() => remove(i)}>remove</button>}
+										{arr.length > 1 && <hr/>}
+									</div>)
 							}
+							<button className="d-block mb-3 btn btn-lg btn-primary"
+							        type="button"
+							        onClick={() => push(petObject)}>add
+							</button>
 						</>
 					}
 				</FieldArray>

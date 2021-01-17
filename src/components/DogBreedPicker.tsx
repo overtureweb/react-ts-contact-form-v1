@@ -13,12 +13,12 @@ const DogBreedPicker: React.FC<FormikValues> = ({form: formik, field}) => {
 	return (
 		<div className="mb-3">
 			<label className="form-label" htmlFor={field.name}>What breed or mix is your dog?</label>
-			<input list="dog-breed-list"
+			<input list={`${field.name}-list`}
 			       id={field.name}
 			       {...formik.getFieldProps(field.name)}
 			       className={classNames("form-control form-control-lg", {"is-invalid": getIn(formik.errors, field.name) && getIn(formik.touched, field.name)})}/>
 			<ErrorMessage component="div" name={field.name} className="invalid-feedback"/>
-			<datalist id="dog-breed-list">
+			<datalist id={`${field.name}-list`}>
 				{breedOptions}
 			</datalist>
 		</div>
