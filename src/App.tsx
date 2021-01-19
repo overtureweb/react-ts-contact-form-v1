@@ -7,9 +7,21 @@ import DogBreedPicker from "./components/DogBreedPicker";
 import FormInput from "./components/FormInput";
 import FormSelect from "./components/FormSelect";
 import {getMonthsForDropDown, getYearsForDropDown} from "./utilities/DateUtilities";
+import FormRadioGroup from "./components/FormRadioGroup";
 
 function App() {
-	const petObject = {name: "", breed: "", dobMonth: "", dobYear: "", gender: "", weight: "", microchipped: ""};
+	const petObject = {
+		name: "",
+		breed: "",
+		dobMonth: "",
+		dobYear: "",
+		gender: "",
+		weight: "",
+		isMicrochipped: "",
+		isVaccinated: "",
+		isSocial: "",
+		testField: ""
+	};
 	return (
 		<Formik
 			initialValues={{
@@ -22,7 +34,8 @@ function App() {
 				state: "",
 				zip: "",
 				startDate: "",
-				pets: [petObject]
+				pets: [petObject],
+
 			}}
 			validationSchema={Yup.object({
 				firstName: Yup.string()
@@ -43,8 +56,9 @@ function App() {
 			})}
 			onSubmit={values => console.log(values)}>
 			{({values}) => <Form noValidate={true}>
+				{/*todo move fieldarray to it's own component*/}
 				<FieldArray name="pets">
-					{({insert, remove, push}) =>
+					{({remove, push}) =>
 						<>
 							{
 								values.pets.length > 0 && values.pets.map((pet, i, arr) =>
@@ -61,25 +75,46 @@ function App() {
 										       selectMenuValues={["female/spayed", "male/neutered", "female", "male"]}
 										/>
 										<div className="row">
-											<Field component={FormSelect}
-											       name={`pets.${i}.dobMonth`}
-											       label="Month"
-											       selectMenuValues={getMonthsForDropDown}/>
-											<Field component={FormSelect}
-											       name={`pets.${i}.dobYear`}
-											       label="Year"
-											       selectMenuValues={getYearsForDropDown(new Date().getFullYear())}
-											/>
+											<div className="mb-3 col">
+												<Field component={FormSelect}
+												       name={`pets.${i}.dobMonth`}
+												       label="Month"
+												       selectMenuValues={getMonthsForDropDown}/>
+											</div>
+											<div className="mb-3 col">
+												<Field component={FormSelect}
+												       name={`pets.${i}.dobYear`}
+												       label="Year"
+												       selectMenuValues={getYearsForDropDown(new Date().getFullYear())}
+												/>
+											</div>
 										</div>
-										{i > 0 && <button className="btn btn-danger"
-										                  type="button"
-										                  onClick={() => remove(i)}>remove</button>}
-										{arr.length > 1 && <hr/>}
+										<p>Is your dog friendly with dogs and people?</p>
+										<Field name={`pets.${i}.isSocial`}
+										       id={`pets.${i}.isSocial-1`}
+										       value="yes"
+										       component={FormRadioGroup}/>
+										<Field name={`pets.${i}.isSocial`}
+										       id={`pets.${i}.isSocial-2`}
+										       value="no"
+										       component={FormRadioGroup}/>
+										<p>Are your dog's vaccines up-to-date?</p>
+										<Field name={`pets.${i}.isVaccinated`}
+										       id={`pets.${i}.isVaccinated-1`}
+										       value="yes"
+										       component={FormRadioGroup}/>
+										<Field name={`pets.${i}.isVaccinated`}
+										       id={`pets.${i}.isVaccinated-2`}
+										       value="no"
+										       component={FormRadioGroup}/>
+										{arr.length > 1 && <><button className="d-block btn btn-danger"
+											type="button"
+											onClick={() => remove(i)}>remove</button><hr/></>}
 									</div>)
 							}
 							<button className="d-block mb-3 btn btn-lg btn-primary"
 							        type="button"
-							        onClick={() => push(petObject)}>add
+							        onClick={() => push(petObject)}>add a pet
 							</button>
 						</>
 					}
