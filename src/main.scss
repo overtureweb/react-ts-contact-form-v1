@@ -1,3 +1,21 @@
-.foo {
-	color: red;
+.fieldset {
+	border: 1px solid lightgray;
+	padding: 10px 20px;
+	border-radius: .25rem;
+	white-space: nowrap;
+}
+
+.legend {
+	padding: 0 20px;
+	background: rgba(38, 100, 158, 1);
+	color: white;
+	font-size: 1rem;
+	width: auto;
+	border-radius: .3rem;
+	line-height: 2;
+	float: none;
+}
+
+body {
+	height: 300vh;
 }
