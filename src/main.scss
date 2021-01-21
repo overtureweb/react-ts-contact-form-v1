@@ -19,3 +19,7 @@
 body {
 	height: 300vh;
 }
+
+.react-datepicker-wrapper, .react-datepicker__input-container {
+	display: block !important;
+}

@@ -5,14 +5,13 @@ import * as Yup from "yup"
 import StatePicker from "./components/StatePicker";
 import DogBreedPicker from "./components/DogBreedPicker";
 import FormInput from "./components/FormInput";
-import FormSelect from "./components/FormSelect";
 import {getMonthsForDropDown, getYearsForDropDown} from "./utilities/DateUtilities";
 import FormRadioGroup from "./components/FormRadioGroup";
 import FormCheckbox from "./components/FormCheckbox";
 import DatePicker from "react-datepicker";
-
 import "react-datepicker/dist/react-datepicker.css";
 import classNames from "classnames";
+import FormSelect from "./components/FormSelect";
 
 function App() {
 	const petObject = {
@@ -22,12 +21,11 @@ function App() {
 		dobYear: "",
 		gender: "",
 		weight: "",
-		isMicrochipped: "",
 		isVaccinated: "",
 		isSocial: "",
 		testField: ""
 	};
-	// @ts-ignore
+
 	return (
 		<Formik
 			initialValues={{
@@ -42,6 +40,7 @@ function App() {
 				startDate: undefined,
 				selectedDays: [],
 				pets: [petObject],
+				flavor: ""
 
 			}}
 			validationSchema={Yup.object({
@@ -62,40 +61,37 @@ function App() {
 					})),
 				startDate: Yup.string().required("required"),
 			})}
-			onSubmit={values => console.log(values)}>
+			onSubmit={(values, ...rest) => {
+				console.log(values);
+			}}>
 			{({values, ...formik}) => <Form noValidate={true}>
 				{/*todo move fieldarray to it's own component*/}
-				{console.log(formik)}
 				<FieldArray name="pets">
 					{({remove, push}) =>
 						<>
 							{
 								values.pets.length > 0 && values.pets.map((pet, i, arr) =>
 									<div className="mb-3" key={`pet-${i}`}>
-										<Field name={`pets.${i}.name`}
-										       label="Name"
-										       component={FormInput}/>
+										<FormInput name={`pets.${i}.name`}
+										           label="Name"
+										           type="text"/>
 										<Field name={`pets.${i}.breed`}
 										       label="Breed"
 										       component={DogBreedPicker}/>
-										<Field name={`pets.${i}.gender`}
-										       label="Gender"
-										       component={FormSelect}
-										       selectMenuValues={["female/spayed", "male/neutered", "female", "male"]}
+										<FormSelect name={`pets.${i}.gender`}
+										            label="Gender"
+										            selectMenuValues={["female/spayed", "male/neutered", "female", "male"]}
 										/>
 										<div className="row">
 											<div className="mb-3 col">
-												<Field component={FormSelect}
-												       name={`pets.${i}.dobMonth`}
-												       label="Month"
-												       selectMenuValues={getMonthsForDropDown}/>
+												<FormSelect name={`pets.${i}.dobMonth`}
+												            label="Month"
+												            selectMenuValues={getMonthsForDropDown}/>
 											</div>
 											<div className="mb-3 col">
-												<Field component={FormSelect}
-												       name={`pets.${i}.dobYear`}
-												       label="Year"
-												       selectMenuValues={getYearsForDropDown(new Date().getFullYear())}
-												/>
+												<FormSelect name={`pets.${i}.dobYear`}
+												            label="Year"
+												            selectMenuValues={getYearsForDropDown(new Date().getFullYear())}/>
 											</div>
 										</div>
 										<p>Is your dog friendly with dogs and people?</p>
@@ -132,15 +128,15 @@ function App() {
 						</>
 					}
 				</FieldArray>
-				<Field name="firstName" label="First Name" component={FormInput}/>
-				<Field name="lastName" label="Last Name" component={FormInput}/>
-				<Field name="email" label="Email" type="email" component={FormInput}/>
-				<Field name="phone" label="Phone" type="tel" component={FormInput}/>
-				<Field name="address" label="Address" component={FormInput}/>
-				<Field name="city" label="City" component={FormInput}/>
+				<FormInput name="firstName" label="First Name" type="text"/>
+				<FormInput name="lastName" label="Last Name" type="text"/>
+				<FormInput name="email" label="Email" type="email"/>
+				<FormInput name="phone" label="Phone" type="tel"/>
+				<FormInput name="address" label="Address" type="text"/>
+				<FormInput name="city" label="City" type="text"/>
 				<div className="row">
 					<Field component={StatePicker}/>
-					<Field name="zip" label="Zip" component={FormInput}/>
+					<FormInput name="zip" label="Zip" type="text"/>
 				</div>
 				<div className="mb-3">
 					<fieldset className="fieldset text-center text-md-start">
