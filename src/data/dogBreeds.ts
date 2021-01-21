@@ -1,4 +1,4 @@
-[
+const dogBreeds: string[] = [
   "Affenpinscher",
   "Afghan Hound",
   "Airedale Terrier",
@@ -264,3 +264,5 @@
   "Yorkipoo",
   "Yorkshire Terrier"
 ]
+
+export default dogBreeds

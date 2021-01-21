@@ -4,12 +4,14 @@ import {ErrorMessage, FormikValues, useField} from "formik";
 
 interface FormSelectProps extends FormikValues {
 	selectMenuValues: any[];
+	label: string;
+	name: string;
 }
 
 const FormSelect: React.FC<FormSelectProps> = ({label, selectMenuValues, ...props}) => {
 	const [field, meta] = useField(props.name)
 	return (
-		<div className="mb-3">
+		<div className="col mb-3">
 			<label className="form-label" htmlFor={field.name}>{label}</label>
 			<select id={field.name}
 			        {...field}
