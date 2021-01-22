@@ -8,8 +8,8 @@ interface FormSelectProps extends FormikValues {
 	name: string;
 }
 
-const FormSelect: React.FC<FormSelectProps> = ({label, selectMenuValues, ...props}) => {
-	const [field, meta] = useField(props.name)
+const FormSelect: React.FC<FormSelectProps> = ({label, selectMenuValues, name}) => {
+	const [field, meta] = useField(name)
 	return (
 		<>
 			<label className="form-label" htmlFor={field.name}>{label}</label>

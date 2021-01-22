@@ -1,10 +1,9 @@
 import React from "react";
 import "./main.scss";
-import {ErrorMessage, Field, FieldArray, Form, Formik, getIn} from "formik";
+import {ErrorMessage, FieldArray, Form, Formik, getIn} from "formik";
 import * as Yup from "yup"
 import {getMonthsForDropDown, getYearsForDropDown} from "./utilities/DateUtilities";
 import FormInput from "./components/FormInput";
-import FormRadioGroup from "./components/FormRadioGroup";
 import FormCheckbox from "./components/FormCheckbox";
 import FormSelect from "./components/FormSelect";
 import FormDatalist from "./components/FormDatalist";
@@ -12,6 +11,7 @@ import DatePicker from "react-datepicker";
 import classNames from "classnames";
 import dogBreeds from "./data/dogBreeds";
 import us_states from "./data/us_states";
+import getDay from "date-fns/getDay";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -25,6 +25,10 @@ function App() {
 		weight: "",
 		isVaccinated: "",
 		isSocial: "",
+	};
+	const isWeekday = (date: number | Date): boolean => {
+		const day = getDay(date);
+		return day !== 0 && day !== 6;
 	};
 
 	return (
@@ -109,22 +113,22 @@ function App() {
 											<p>Is your dog friendly with dogs and people?</p>
 
 											<div className="form-check form-check-inline mb-3">
-												<FormRadioGroup name={`pets.${i}.isSocial`}
+												<FormCheckbox name={`pets.${i}.isSocial`}
 												                type="radio"
 												                label="yes"/>
 											</div>
 											<div className="form-check form-check-inline mb-3">
-												<FormRadioGroup name={`pets.${i}.isSocial`}
+												<FormCheckbox name={`pets.${i}.isSocial`}
 												                type="radio"
 												                label="no"/>
 											</div>
 											<p>Are your dog's vaccines up-to-date?</p>
 											<div className="form-check form-check-inline mb-3">
-												<FormRadioGroup name={`pets.${i}.isVaccinated`}
+												<FormCheckbox name={`pets.${i}.isVaccinated`}
 												                type="radio"
 												                label="yes"/></div>
 											<div className="form-check form-check-inline mb-3">
-												<FormRadioGroup name={`pets.${i}.isVaccinated`}
+												<FormCheckbox name={`pets.${i}.isVaccinated`}
 												                type="radio"
 												                label="no"/>
 											</div>
@@ -187,6 +191,7 @@ function App() {
 							            formik.setFieldTouched("startDate", true);
 							            formik.setFieldValue("startDate", date);
 						            }}
+						            filterDate={isWeekday}
 						            onClickOutside={() => formik.setFieldTouched("startDate", true)}
 						            className={classNames("form-control form-control-lg hello", {"is-invalid": getIn(formik.errors, "startDate") && getIn(formik.touched, "startDate")})}
 						/>

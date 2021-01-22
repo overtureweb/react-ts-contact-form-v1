@@ -9,8 +9,8 @@ interface FormSelectProps extends FormikValues {
 	type: string;
 }
 
-const FormDatalist: React.FC<FormSelectProps> = ({label, type, listData, ...props}) => {
-	const [field, meta] = useField(props.name);
+const FormDatalist: React.FC<FormSelectProps> = ({label, type, listData, name}) => {
+	const [field, meta] = useField(name);
 	const datalistOptions: JSX.Element[] | any = listData.map((listItem, i) =>
 		<option
 			key={`listItem-${i}`}
