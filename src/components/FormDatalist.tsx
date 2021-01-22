@@ -16,7 +16,7 @@ const FormDatalist: React.FC<FormSelectProps> = ({label, type, listData, ...prop
 			key={`listItem-${i}`}
 			value={listItem}/>);
 	return (
-		<div className="mb-3">
+		<>
 			<label htmlFor={field.name} className="form-label">{label}</label>
 			<input id={field.name}
 			       list={`${field.name}-list`}
@@ -27,7 +27,7 @@ const FormDatalist: React.FC<FormSelectProps> = ({label, type, listData, ...prop
 			<datalist id={`${field.name}-list`}>
 				{datalistOptions}
 			</datalist>
-		</div>
+		</>
 	);
 }
 

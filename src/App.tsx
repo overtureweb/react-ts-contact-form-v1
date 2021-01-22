@@ -17,7 +17,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 function App() {
 	const petObject = {
-		name: "",
+		dogname: "",
 		breed: "",
 		dobMonth: "",
 		dobYear: "",
@@ -55,13 +55,18 @@ function App() {
 				zip: Yup.string().matches(/\d{5}/, "invalid zip code").required("required"),
 				pets: Yup.array()
 					.of(Yup.object().shape({
-						name: Yup.string().required("required"),
+						dogname: Yup.string().required("required"),
 						breed: Yup.string().required("required")
 					})),
 				startDate: Yup.string().required("required"),
 			})}
 			onSubmit={(values, ...rest) => {
-				console.log(values, rest);
+				// console.log(values);
+				const [helpers] = rest;
+				// the selectedDays field might not get touched by the user so have to validate after form submit when formik marks all fields as touched
+				if (!values.selectedDays.length) {
+					return helpers.setFieldError("selectedDays", "please select at least one day")
+				}
 			}}>
 			{({values, ...formik}) =>
 				<Form noValidate={true}>
@@ -72,43 +77,57 @@ function App() {
 								{
 									values.pets.length > 0 && values.pets.map((pet, i, arr) =>
 										<div className="mb-3" key={`pet-${i}`}>
-											<FormInput name={`pets.${i}.name`}
-											           label="Name"
-											           type="text"/>
-											<FormDatalist type="text"
-											              listData={dogBreeds}
-											              label="Breed"
-											              name={`pets.${i}.breed`}/>
-											<FormSelect name={`pets.${i}.gender`}
-											            label="Gender"
-											            selectMenuValues={["female/spayed", "male/neutered", "female", "male"]}
-											/>
-											<div className="row">
-												<FormSelect name={`pets.${i}.dobMonth`}
-												            label="Month"
-												            selectMenuValues={getMonthsForDropDown}/>
-												<FormSelect name={`pets.${i}.dobYear`}
-												            label="Year"
-												            selectMenuValues={getYearsForDropDown(new Date().getFullYear())}/>
+											<div className="mb-3">
+												<FormInput name={`pets.${i}.dogname`}
+												           label="Dog's Name"
+												           type="text"/>
 											</div>
+											<div className="mb-3">
+												<FormDatalist type="text"
+												              listData={dogBreeds}
+												              label="Breed"
+												              name={`pets.${i}.breed`}/>
+											</div>
+											<div className="mb-3">
+												<FormSelect name={`pets.${i}.gender`}
+												            label="Gender"
+												            selectMenuValues={["female/spayed", "male/neutered", "female", "male"]}/>
+											</div>
+											<div className="row mb-3">
+												<div className="col">
+													<FormSelect name={`pets.${i}.dobMonth`}
+													            label="Month"
+													            selectMenuValues={getMonthsForDropDown}/>
+												</div>
+												<div className="col">
+													<FormSelect name={`pets.${i}.dobYear`}
+													            label="Year"
+													            selectMenuValues={getYearsForDropDown(new Date().getFullYear())}/>
+												</div>
+											</div>
+
 											<p>Is your dog friendly with dogs and people?</p>
-											<Field name={`pets.${i}.isSocial`}
-											       id={`pets.${i}.isSocial-1`}
-											       value="yes"
-											       component={FormRadioGroup}/>
-											<Field name={`pets.${i}.isSocial`}
-											       id={`pets.${i}.isSocial-2`}
-											       value="no"
-											       component={FormRadioGroup}/>
+
+											<div className="form-check form-check-inline mb-3">
+												<FormRadioGroup name={`pets.${i}.isSocial`}
+												                type="radio"
+												                label="yes"/>
+											</div>
+											<div className="form-check form-check-inline mb-3">
+												<FormRadioGroup name={`pets.${i}.isSocial`}
+												                type="radio"
+												                label="no"/>
+											</div>
 											<p>Are your dog's vaccines up-to-date?</p>
-											<Field name={`pets.${i}.isVaccinated`}
-											       id={`pets.${i}.isVaccinated-1`}
-											       value="yes"
-											       component={FormRadioGroup}/>
-											<Field name={`pets.${i}.isVaccinated`}
-											       id={`pets.${i}.isVaccinated-2`}
-											       value="no"
-											       component={FormRadioGroup}/>
+											<div className="form-check form-check-inline mb-3">
+												<FormRadioGroup name={`pets.${i}.isVaccinated`}
+												                type="radio"
+												                label="yes"/></div>
+											<div className="form-check form-check-inline mb-3">
+												<FormRadioGroup name={`pets.${i}.isVaccinated`}
+												                type="radio"
+												                label="no"/>
+											</div>
 											{arr.length > 1 && <>
 												<button className="d-block btn btn-danger"
 												        type="button"
@@ -125,28 +144,39 @@ function App() {
 							</>
 						}
 					</FieldArray>
-					<FormInput name="firstName" label="First Name" type="text"/>
-					<FormInput name="lastName" label="Last Name" type="text"/>
-					<FormInput name="email" label="Email" type="email"/>
-					<FormInput name="phone" label="Phone" type="tel"/>
-					<FormInput name="address" label="Address" type="text"/>
-					<FormInput name="city" label="City" type="text"/>
+					<div className="mb-3"><FormInput name="firstName" label="First Name" type="text"/></div>
+					<div className="mb-3"><FormInput name="lastName" label="Last Name" type="text"/></div>
+					<div className="mb-3"><FormInput name="email" label="Email" type="email"/></div>
+					<div className="mb-3"><FormInput name="phone" label="Phone" type="tel"/></div>
+					<div className="mb-3"><FormInput name="address" label="Address" type="text"/></div>
+					<div className="mb-3"><FormInput name="city" label="City" type="text"/></div>
 
-					<div className="row">
-						<FormSelect selectMenuValues={us_states} label="State" name="state"/>
-						<FormInput name="zip" label="Zip" type="text"/>
+					<div className="row mb-3">
+						<div className="col"><FormSelect selectMenuValues={us_states} label="State" name="state"/></div>
+						<div className="col"><FormInput name="zip" label="Zip" type="text"/></div>
 					</div>
 
-					<div className="mb-3">
-						<fieldset className="fieldset text-center text-md-start">
-							<legend className="legend">Please select a weekly schedule:</legend>
+					<fieldset className="fieldset text-center text-md-start mb-3">
+						<legend className="legend">Please select a weekly schedule:</legend>
+						<div className="form-check form-check-inline">
 							<FormCheckbox name="selectedDays" label="M" type="checkbox"/>
+						</div>
+						<div className="form-check form-check-inline">
 							<FormCheckbox name="selectedDays" label="Tu" type="checkbox"/>
+						</div>
+						<div className="form-check form-check-inline">
 							<FormCheckbox name="selectedDays" label="W" type="checkbox"/>
+						</div>
+						<div className="form-check form-check-inline">
 							<FormCheckbox name="selectedDays" label="Th" type="checkbox"/>
+						</div>
+						<div className="form-check form-check-inline">
 							<FormCheckbox name="selectedDays" label="F" type="checkbox"/>
-						</fieldset>
-					</div>
+						</div>
+						<input type="hidden"
+						       className={classNames({"is-invalid": getIn(formik.errors, "selectedDays") && getIn(formik.touched, "selectedDays")})}/>
+						<ErrorMessage component="div" name="selectedDays" className="invalid-feedback"/>
+					</fieldset>
 					<div className="mb-3">
 						<label className="form-label d-block" htmlFor="startDate">Start Date</label>
 						<DatePicker id="startDate"

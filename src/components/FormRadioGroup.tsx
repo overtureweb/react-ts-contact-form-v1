@@ -1,18 +1,21 @@
 import React from "react";
-import {FormikValues} from "formik";
+import {FormikValues, useField} from "formik";
 
-const FormRadioGroup: React.FC<FormikValues> = ({form: formik, field, value, id}) => (
-		<div className="form-check form-check-inline mb-3">
+const FormRadioGroup: React.FC<FormikValues> = ({label, ...props}) => {
+	const [field] = useField({name: props.name, type: "radio", value: label});
+	return (
+		<>
 			<input className="form-check-input"
 			       type="radio"
-			       id={id}
-			       {...formik.getFieldProps(field.name)}
-			       value={value}
+			       id={field.value}
+			       {...props}
+			       {...field}
 			/>
-			<label className="form-check-label" htmlFor={id}>
-				{value}
+			<label className="form-check-label" htmlFor={field.value}>
+				{field.value}
 			</label>
-		</div>
-)
+		</>
+	)
+}
 
 export default FormRadioGroup;

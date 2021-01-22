@@ -1,24 +1,21 @@
 import React from "react";
 import {FormikValues, useField} from "formik";
-
-// const FormCheckbox: React.FC<FormikValues> = ({form: formik, field, value, id}) =>
-// <div className="form-check form-check-inline">
-// 	<input {...formik.getFieldProps(field.name)} className="form-check-input" type="checkbox" value={value} id={id} />
-// 	<label className="form-check-label" htmlFor={id}>
-// 		{value}
-// 	</label>
-// </div>
+import classNames from "classnames";
 
 const FormCheckbox: React.FC<FormikValues> = ({label, type, ...props}) => {
-	const [field] = useField(props.name);
+	const [field, meta] = useField({name: props.name, type: type, value: label});
 	return (
-		<div className="form-check form-check-inline">
-			<input {...field} {...props} className="form-check-input" type={type} value={label}
-			       id={label}/>
-			<label className="form-check-label" htmlFor={label}>
-				{label}
+		<>
+			<input className={classNames("form-check-input", {"is-invalid": meta.error && meta.touched})}
+			       type={type}
+			       id={field.value}
+			       {...field}
+			       {...props}
+			/>
+			<label className="form-check-label" htmlFor={field.value}>
+				{field.value}
 			</label>
-		</div>
+		</>
 	)
 }
 
