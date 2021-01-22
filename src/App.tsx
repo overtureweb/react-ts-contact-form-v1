@@ -1,19 +1,17 @@
 import React from "react";
 import "./main.scss";
-import {ErrorMessage, FieldArray, Form, Formik, getIn} from "formik";
+import {ErrorMessage, Form, Formik, getIn} from "formik";
 import * as Yup from "yup"
-import {getMonthsForDropDown, getYearsForDropDown} from "./utilities/DateUtilities";
 import FormInput from "./components/FormInput";
 import FormCheckbox from "./components/FormCheckbox";
 import FormSelect from "./components/FormSelect";
-import FormDatalist from "./components/FormDatalist";
 import DatePicker from "react-datepicker";
 import classNames from "classnames";
-import dogBreeds from "./data/dogBreeds";
 import us_states from "./data/us_states";
 import getDay from "date-fns/getDay";
 
 import "react-datepicker/dist/react-datepicker.css";
+import FormFieldArray from "./components/FormFieldArray";
 
 function App() {
 	const petObject = {
@@ -65,7 +63,7 @@ function App() {
 				startDate: Yup.string().required("required"),
 			})}
 			onSubmit={(values, ...rest) => {
-				// console.log(values);
+				console.log(values);
 				const [helpers] = rest;
 				// the selectedDays field might not get touched by the user so have to validate after form submit when formik marks all fields as touched
 				if (!values.selectedDays.length) {
@@ -74,80 +72,7 @@ function App() {
 			}}>
 			{({values, ...formik}) =>
 				<Form noValidate={true}>
-					{/*todo move fieldarray to it's own component*/}
-					<FieldArray name="pets">
-						{({remove, push}) =>
-							<>
-								{
-									values.pets.length > 0 && values.pets.map((pet, i, arr) =>
-										<div className="mb-3" key={`pet-${i}`}>
-											<div className="mb-3">
-												<FormInput name={`pets.${i}.dogname`}
-												           label="Dog's Name"
-												           type="text"/>
-											</div>
-											<div className="mb-3">
-												<FormDatalist type="text"
-												              listData={dogBreeds}
-												              label="Breed"
-												              name={`pets.${i}.breed`}/>
-											</div>
-											<div className="mb-3">
-												<FormSelect name={`pets.${i}.gender`}
-												            label="Gender"
-												            selectMenuValues={["female/spayed", "male/neutered", "female", "male"]}/>
-											</div>
-											<div className="row mb-3">
-												<div className="col">
-													<FormSelect name={`pets.${i}.dobMonth`}
-													            label="Month"
-													            selectMenuValues={getMonthsForDropDown}/>
-												</div>
-												<div className="col">
-													<FormSelect name={`pets.${i}.dobYear`}
-													            label="Year"
-													            selectMenuValues={getYearsForDropDown(new Date().getFullYear())}/>
-												</div>
-											</div>
-
-											<p>Is your dog friendly with dogs and people?</p>
-
-											<div className="form-check form-check-inline mb-3">
-												<FormCheckbox name={`pets.${i}.isSocial`}
-												                type="radio"
-												                label="yes"/>
-											</div>
-											<div className="form-check form-check-inline mb-3">
-												<FormCheckbox name={`pets.${i}.isSocial`}
-												                type="radio"
-												                label="no"/>
-											</div>
-											<p>Are your dog's vaccines up-to-date?</p>
-											<div className="form-check form-check-inline mb-3">
-												<FormCheckbox name={`pets.${i}.isVaccinated`}
-												                type="radio"
-												                label="yes"/></div>
-											<div className="form-check form-check-inline mb-3">
-												<FormCheckbox name={`pets.${i}.isVaccinated`}
-												                type="radio"
-												                label="no"/>
-											</div>
-											{arr.length > 1 && <>
-												<button className="d-block btn btn-danger"
-												        type="button"
-												        onClick={() => remove(i)}>remove
-												</button>
-												<hr/>
-											</>}
-										</div>)
-								}
-								<button className="d-block mb-3 btn btn-lg btn-primary"
-								        type="button"
-								        onClick={() => push(petObject)}>add a pet
-								</button>
-							</>
-						}
-					</FieldArray>
+					<FormFieldArray/>
 					<div className="mb-3"><FormInput name="firstName" label="First Name" type="text"/></div>
 					<div className="mb-3"><FormInput name="lastName" label="Last Name" type="text"/></div>
 					<div className="mb-3"><FormInput name="email" label="Email" type="email"/></div>
