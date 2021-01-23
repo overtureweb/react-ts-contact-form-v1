@@ -3,12 +3,12 @@ import "./main.scss";
 import {ErrorMessage, Form, Formik, getIn} from "formik";
 import * as Yup from "yup"
 import FormInput from "./components/FormInput";
-import FormCheckbox from "./components/FormCheckbox";
 import FormSelect from "./components/FormSelect";
 import DatePicker from "react-datepicker";
 import classNames from "classnames";
 import us_states from "./data/us_states";
 import getDay from "date-fns/getDay";
+import FormCheckboxGroup from "./components/FormCheckboxGroup";
 
 import "react-datepicker/dist/react-datepicker.css";
 import FormFieldArray from "./components/FormFieldArray";
@@ -86,21 +86,23 @@ function App() {
 					</div>
 
 					<fieldset className="fieldset text-center text-md-start mb-3">
-						<legend className="legend">Please select a weekly schedule:</legend>
-						<div className="form-check form-check-inline">
-							<FormCheckbox name="selectedDays" label="M" type="checkbox"/>
-						</div>
-						<div className="form-check form-check-inline">
-							<FormCheckbox name="selectedDays" label="Tu" type="checkbox"/>
-						</div>
-						<div className="form-check form-check-inline">
-							<FormCheckbox name="selectedDays" label="W" type="checkbox"/>
-						</div>
-						<div className="form-check form-check-inline">
-							<FormCheckbox name="selectedDays" label="Th" type="checkbox"/>
-						</div>
-						<div className="form-check form-check-inline">
-							<FormCheckbox name="selectedDays" label="F" type="checkbox"/>
+						<legend className="legend">Please select a weekly schedule</legend>
+						<div className="form-check-group__container mb-3">
+							<div className="form-check-group__item">
+								<FormCheckboxGroup name="selectedDays" label="M" type="checkbox"/>
+							</div>
+							<div className="form-check-group__item">
+								<FormCheckboxGroup name="selectedDays" label="Tu" type="checkbox"/>
+							</div>
+							<div className="form-check-group__item">
+								<FormCheckboxGroup name="selectedDays" label="W" type="checkbox"/>
+							</div>
+							<div className="form-check-group__item">
+								<FormCheckboxGroup name="selectedDays" label="Th" type="checkbox"/>
+							</div>
+							<div className="form-check-group__item">
+								<FormCheckboxGroup name="selectedDays" label="F" type="checkbox"/>
+							</div>
 						</div>
 						<input type="hidden"
 						       className={classNames({"is-invalid": getIn(formik.errors, "selectedDays") && getIn(formik.touched, "selectedDays")})}/>

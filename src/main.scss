@@ -1,3 +1,7 @@
+:root {
+	--my-color: #26649e;
+}
+
 .fieldset {
 	border: 1px solid lightgray;
 	padding: 10px 20px;
@@ -6,14 +10,16 @@
 }
 
 .legend {
-	padding: 0 20px;
+	padding: 0 1.25rem;
 	background: rgba(38, 100, 158, 1);
 	color: white;
-	font-size: 1rem;
+	font-size: .875rem;
 	width: auto;
 	border-radius: .3rem;
-	line-height: 2;
 	float: none;
+	line-height: 3;
+	text-transform: uppercase;
+	margin-bottom: 1rem;
 }
 
 body {
@@ -23,3 +29,25 @@ body {
 .react-datepicker-wrapper, .react-datepicker__input-container {
 	display: block !important;
 }
+
+.form-check-group {
+	&__container {
+		display: flex;
+		input:checked ~ label {
+			background: var(--my-color);
+			color: white;
+		}
+	}
+	&__item {
+		flex: 1 1 100%;
+	}
+	&__label {
+		height: 3.125rem;
+		background: rgba(0,0,0,.05);
+		margin: 0 1px;
+		cursor: pointer;
+		transition: background .25s ease-in-out;
+	}
+
+}
+
