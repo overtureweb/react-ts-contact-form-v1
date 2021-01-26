@@ -37,6 +37,10 @@ body {
 			background: var(--my-color);
 			color: white;
 		}
+		&--binary-radio-layout {
+			display: inline-flex;
+			width: 10rem;
+		}
 	}
 	&__item {
 		flex: 1 1 100%;

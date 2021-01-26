@@ -6,6 +6,7 @@ import FormSelect from "./FormSelect";
 import {getMonthsForDropDown, getYearsForDropDown} from "../utilities/DateUtilities";
 import FormCheckbox from "./FormCheckbox";
 import {FieldArray, FormikValues, useFormikContext} from "formik";
+import FormCheckboxGroup from "./FormCheckboxGroup";
 
 const FormFieldArray = () => {
 	const petObject = {
@@ -56,26 +57,30 @@ const FormFieldArray = () => {
 								</div>
 
 								<p>Is your dog friendly with dogs and people?</p>
-
-								<div className="form-check form-check-inline mb-3">
-									<FormCheckbox name={`pets.${i}.isSocial`}
-									              type="radio"
-									              label="yes"/>
-								</div>
-								<div className="form-check form-check-inline mb-3">
-									<FormCheckbox name={`pets.${i}.isSocial`}
-									              type="radio"
-									              label="no"/>
+								<div
+									className="form-check-group__container form-check-group__container--binary-radio-layout">
+									<div className="form-check-group__item mb-3">
+										<FormCheckboxGroup name={`pets.${i}.isSocial`}
+										                   type="radio"
+										                   label="yes"/>
+									</div>
+									<div className="form-check-group__item mb-3">
+										<FormCheckboxGroup name={`pets.${i}.isSocial`}
+										                   type="radio"
+										                   label="no"/>
+									</div>
 								</div>
 								<p>Are your dog's vaccines up-to-date?</p>
-								<div className="form-check form-check-inline mb-3">
-									<FormCheckbox name={`pets.${i}.isVaccinated`}
-									              type="radio"
-									              label="yes"/></div>
-								<div className="form-check form-check-inline mb-3">
-									<FormCheckbox name={`pets.${i}.isVaccinated`}
-									              type="radio"
-									              label="no"/>
+								<div className="form-check-group__container form-check-group__container--binary-radio-layout">
+									<div className="form-check-group__item mb-3">
+										<FormCheckboxGroup name={`pets.${i}.isVaccinated`}
+										              type="radio"
+										              label="yes"/></div>
+									<div className="form-check-group__item mb-3">
+										<FormCheckboxGroup name={`pets.${i}.isVaccinated`}
+										              type="radio"
+										              label="no"/>
+									</div>
 								</div>
 								{arr.length > 1 && <>
 									<button className="d-block btn btn-danger"
@@ -88,7 +93,7 @@ const FormFieldArray = () => {
 					}
 					<button className="d-block mb-3 btn btn-lg btn-primary"
 					        type="button"
-					        onClick={() => push(petObject)}>add a pet
+					        onClick={() => push(petObject)}>add another pet
 					</button>
 				</>
 			}
