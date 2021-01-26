@@ -9,7 +9,7 @@ import classNames from "classnames";
 import us_states from "./data/us_states";
 import getDay from "date-fns/getDay";
 import FormCheckboxGroup from "./components/FormCheckboxGroup";
-
+import {ReactComponent as Calendar} from "bootstrap-icons/icons/calendar3.svg";
 import "react-datepicker/dist/react-datepicker.css";
 import FormFieldArray from "./components/FormFieldArray";
 
@@ -79,8 +79,8 @@ function App() {
 					<div className="mb-3"><FormInput name="phone" label="Phone" type="tel"/></div>
 					<div className="mb-3"><FormInput name="address" label="Address" type="text"/></div>
 					<div className="mb-3"><FormInput name="city" label="City" type="text"/></div>
-
 					<div className="row mb-3">
+						{/*todo add the option elements here and spread as child props in the component*/}
 						<div className="col"><FormSelect selectMenuValues={us_states} label="State" name="state"/></div>
 						<div className="col"><FormInput name="zip" label="Zip" type="text"/></div>
 					</div>
@@ -109,7 +109,7 @@ function App() {
 						<ErrorMessage component="div" name="selectedDays" className="invalid-feedback"/>
 					</fieldset>
 					<div className="mb-3">
-						<label className="form-label d-block" htmlFor="startDate">Start Date</label>
+						<label className="form-label d-block" htmlFor="startDate">Start Date <Calendar/></label>
 						<DatePicker id="startDate"
 						            autoComplete="stop"
 						            minDate={new Date()}
@@ -120,7 +120,7 @@ function App() {
 						            }}
 						            filterDate={isWeekday}
 						            onClickOutside={() => formik.setFieldTouched("startDate", true)}
-						            className={classNames("form-control form-control-lg hello", {"is-invalid": getIn(formik.errors, "startDate") && getIn(formik.touched, "startDate")})}
+						            className={classNames("form-control form-control-lg", {"is-invalid": getIn(formik.errors, "startDate") && getIn(formik.touched, "startDate")})}
 						/>
 						<input type="hidden"
 						       className={classNames({"is-invalid": getIn(formik.errors, "startDate") && getIn(formik.touched, "startDate")})}/>

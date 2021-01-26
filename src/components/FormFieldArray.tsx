@@ -4,7 +4,6 @@ import FormDatalist from "./FormDatalist";
 import dogBreeds from "../data/dogBreeds";
 import FormSelect from "./FormSelect";
 import {getMonthsForDropDown, getYearsForDropDown} from "../utilities/DateUtilities";
-import FormCheckbox from "./FormCheckbox";
 import {FieldArray, FormikValues, useFormikContext} from "formik";
 import FormCheckboxGroup from "./FormCheckboxGroup";
 
