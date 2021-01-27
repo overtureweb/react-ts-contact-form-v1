@@ -6,18 +6,9 @@ import FormSelect from "./FormSelect";
 import {getMonthsForDropDown, getYearsForDropDown} from "../utilities/DateUtilities";
 import {FieldArray, FormikValues, useFormikContext} from "formik";
 import FormCheckboxGroup from "./FormCheckboxGroup";
+import {petObject} from "../data/petObject";
 
 const FormFieldArray = () => {
-	const petObject = {
-		dogname: "",
-		breed: "",
-		dobMonth: "",
-		dobYear: "",
-		gender: "",
-		weight: "",
-		isVaccinated: "",
-		isSocial: "",
-	};
 	const {values: {pets}} = useFormikContext<FormikValues>();
 	return (
 		<FieldArray name="pets">
@@ -39,19 +30,28 @@ const FormFieldArray = () => {
 								</div>
 								<div className="mb-3">
 									<FormSelect name={`pets.${i}.gender`}
-									            label="Gender"
-									            selectMenuValues={["female/spayed", "male/neutered", "female", "male"]}/>
+									            label="Gender">
+										<option/>
+										<option>female</option>
+										<option>male</option>
+									</FormSelect>
 								</div>
 								<div className="row mb-3">
 									<div className="col">
 										<FormSelect name={`pets.${i}.dobMonth`}
-										            label="Month"
-										            selectMenuValues={getMonthsForDropDown}/>
+										            label="Month">
+											<option/>
+											{(getMonthsForDropDown).map((value, i) =>
+												<option key={`${value}-${i}`}>{value}</option>)}
+										</FormSelect>
 									</div>
 									<div className="col">
 										<FormSelect name={`pets.${i}.dobYear`}
-										            label="Year"
-										            selectMenuValues={getYearsForDropDown(new Date().getFullYear())}/>
+										            label="Year">
+											<option/>
+											{getYearsForDropDown(new Date().getFullYear()).map((value, i) =>
+												<option key={`${value}-${i}`}>{value}</option>)}
+										</FormSelect>
 									</div>
 								</div>
 
@@ -70,15 +70,29 @@ const FormFieldArray = () => {
 									</div>
 								</div>
 								<p>Are your dog's vaccines up-to-date?</p>
-								<div className="form-check-group__container form-check-group__container--binary-radio-layout">
+								<div
+									className="form-check-group__container form-check-group__container--binary-radio-layout">
 									<div className="form-check-group__item mb-3">
 										<FormCheckboxGroup name={`pets.${i}.isVaccinated`}
-										              type="radio"
-										              label="yes"/></div>
+										                   type="radio"
+										                   label="yes"/></div>
 									<div className="form-check-group__item mb-3">
 										<FormCheckboxGroup name={`pets.${i}.isVaccinated`}
-										              type="radio"
-										              label="no"/>
+										                   type="radio"
+										                   label="no"/>
+									</div>
+								</div>
+								<p>Is your dog spayed or neutered?</p>
+								<div
+									className="form-check-group__container form-check-group__container--binary-radio-layout">
+									<div className="form-check-group__item mb-3">
+										<FormCheckboxGroup name={`pets.${i}.isFixed`}
+										                   type="radio"
+										                   label="yes"/></div>
+									<div className="form-check-group__item mb-3">
+										<FormCheckboxGroup name={`pets.${i}.isFixed`}
+										                   type="radio"
+										                   label="no"/>
 									</div>
 								</div>
 								{arr.length > 1 && <>
