@@ -1,3 +1,6 @@
+//todo remove this, using a generic checkbox component that receives a type prop to determine if it's a checkbox or a radio
+
+
 import React from "react";
 import {FormikValues, useField} from "formik";
 

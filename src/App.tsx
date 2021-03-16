@@ -64,17 +64,12 @@ const App = () =>
 				<div className="mb-3"><FormInput name="address" label="Address" type="text"/></div>
 				<div className="mb-3"><FormInput name="city" label="City" type="text"/></div>
 				<div className="row mb-3">
-					{/*todo add the option elements here and spread as child props in the component*/}
 					<div className="col">
-						{/*<FormSelect label="State" name="state">*/}
-						{/*	<option/>*/}
-						{/*	{(us_states).map((value, i) => <option key={`${value}-${i}`}>{value}</option>)}*/}
-						{/*</FormSelect>*/}
 						<FormStatePicker name="state"/>
 					</div>
 					<div className="col"><FormInput name="zip" label="Zip" type="text"/></div>
 				</div>
-
+				{/*todo make this next fieldset it's own component and pass in the days as an array*/}
 				<fieldset className="fieldset text-center text-md-start mb-3">
 					<legend className="legend">Please select a weekly schedule</legend>
 					<div className="form-check-group__container mb-3">
